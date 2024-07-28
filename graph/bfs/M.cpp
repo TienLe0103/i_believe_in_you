@@ -1,5 +1,5 @@
 /*
- *  @date: 13 . 07 . 2024
+ *  @date: 26 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,30 +34,39 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int dx[] = {1, 0, -1, 0};
-int dy[] = {0, 1, 0, -1};
-int n, m, s, t, dist[N];
-vi a[N];   
-queue<int> q;
+// MTWALK
+int dx[] = {0, 1, 0, -1};
+int dy[] = {1, 0, -1, 0};
+int n, res = oo, a[105][105], dist[105][105];
+queue<ii> q;
 
-void bfs(int s) {
-    frr (i, 1, n) dist[i] = -1;
-    dist[s] = 0, q.push(s);
+bool bfs(int l, int r) {
+    if (a[1][1] < l || a[1][1] > r) return 0;
+    frr (i, 1, n) frr (j, 1, n) dist[i][j] = -1; 
+    dist[1][1] = 0;
+    q.push({1, 1});
     while (!q.empty()) {
-        int u = q.front();
+        int u = q.front().fi, v = q.front().se;
         q.pop();
-        for (int v : a[u]) 
-            if (dist[v] == -1) dist[v] = dist[u] + 1, q.push(v);
+        fr (i, 0, 4) {
+            int x = u + dx[i], y = v + dy[i];
+            if (x > 0 && x <= n && y > 0 && y <= n && a[x][y] >= l && a[x][y] <= r && dist[x][y] == -1) 
+                dist[x][y] = dist[u][v] + 1, q.push({x, y});
+        }
     }
+    return (dist[n][n] != -1) ? 1 : 0;
+}
+
+void solve() {
+    frr (i, 0, 100) 
+        frr (j, i, 100) 
+            if (bfs(i, j)) res = min(res, j - i);
+    cout << res;
 }
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n >> m >> s >> t;
-    while (m--) {
-        int x, y; cin >> x >> y;
-        a[x].pb(y), a[y].pb(x);
-    }
-    bfs(s);
-    cout << dist[t];
+    cin >> n;
+    frr (i, 1, n) frr (j, 1, n) cin >> a[i][j];
+    solve();
 }

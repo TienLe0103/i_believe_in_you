@@ -34,6 +34,7 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
+// Biểu diễn cạnh 2
 int n, m;
 vector<priority_queue<int, vi, gi>> q;
 

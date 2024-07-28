@@ -1,5 +1,5 @@
 /*
- *  @date: 19 . 07 . 2024
+ *  @date: 23 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,29 +34,35 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int dx[] = {-2, 2, -2, 2};
-int dy[] = {-2, -2, 2, 2};
-int y, x, ty, tx, dist[10][10];
-queue<ii> q;
+// mualu (7 điểm)
+int n, m, x, u, v, c, res = 0;
+vi a[N];
+bool vst[N];
+queue<int> q;
 
-void bfs(ii s) {
-    frr (i, 1, 8) frr (j, 1, 8) dist[i][j] = -1;
-    dist[s.fi][s.se] = 0, q.push(s);
-    while (!q.empty()) {
-        int u = q.front().fi, v = q.front().se;
-        q.pop();
-        fr (i, 0, 4) {
-            int x = u + dx[i], y = v + dy[i];
-            if (x < 0 || x > 8) continue;
-            if (y < 0 || y > 8) continue;
-            if (dist[x][y] == -1) dist[x][y] = dist[u][v] + 1, q.push({x, y});
-        }
-    }   
-}   
+// void bfs(int s) {
+//     vst[s] = true, q.push(s);
+//     while (!q.empty()) {
+//         int u = q.front();
+//         q.pop();
+//         for (int v : a[u]) 
+//             if (!vst[v]) vst[v] = true, q.push(v);
+//     }
+// }
+
+void dfs(int s) {
+    vst[s] = true;
+    for (int v : a[s]) if (!vst[v]) dfs(v);
+}
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> y >> x >> ty >> tx;
-    bfs({x, y});
-    cout << dist[tx][ty];
+    cin >> n >> m >>x;
+    while (m--) {
+        cin >> u >> v >> c;
+        if (c >= x) a[u].pb(v), a[v].pb(u);
+    }
+    // frr (i, 1, n) if (!vst[i]) bfs(i), res++;
+    frr (i, 1, n) if (!vst[i]) dfs(i), res++;
+    cout << res;
 }

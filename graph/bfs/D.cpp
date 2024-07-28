@@ -1,5 +1,5 @@
 /*
- *  @date: 19 . 07 . 2024
+ *  @date: 17 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,37 +34,30 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int dx[] = {1, 0, -1, 0};
-int dy[] = {0, -1, 0, 1};
-int row, column, dist[105][105];
-char a[105][105];
-ii s, e;
-queue<ii> q;
+// BFS có hướng
+int n, m, s, t, dist[N];
+vi a[N];
+queue<int> q;
 
-void bfs(ii s) {
-    frr (i, 1, row) frr (j, 1, column) dist[i][j] = -1;
-    dist[s.fi][s.se] = 0, q.push(s);
+void bfs(int s) {   
+    frr (i, 1, n) dist[i] = -1;
+    dist[s] = 0;
+    q.push(s);
     while (!q.empty()) {
-        int u = q.front().fi, v = q.front().se;
-        q.pop();    
-        fr (i, 0, 4) {
-            int x = u + dx[i], y = v + dy[i];
-            if (x < 0 || x > row) continue;
-            if (y < 0 || y > column) continue;
-            if (dist[x][y] == -1 && a[x][y] != '*') dist[x][y] = dist[u][v] + 1, q.push({x, y});
-        }
+        int u = q.front();
+        q.pop();
+        for (int v : a[u])
+            if (dist[v] == -1) dist[v] = dist[u] + 1, q.push(v);
     }
 }
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> row >> column;
-    frr (i, 1, row) 
-        frr (j, 1, column) {
-            cin >> a[i][j]; 
-            if (a[i][j] == 'B') s = {i, j};
-            if (a[i][j] == 'C') e = {i, j};
-        }
+    cin >> n >> m >> s >> t;
+    while (m--) {
+        int x, y; cin >> x >> y;
+        a[x].pb(y);
+    }
     bfs(s);
-    cout << dist[e.fi][e.se];
+    cout << dist[t];
 }

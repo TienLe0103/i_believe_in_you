@@ -1,5 +1,5 @@
 /*
- *  @date: 26 . 07 . 2024
+ *  @date: 19 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,34 +34,31 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int n, m, k, u, v, t, c= oo, res = 0;
-vi a[N];
-bool vst[N] = {0};
+// Quân mã
+int dx[] = {1, 2, 2, 1, -1, -2, -2, -1};
+int dy[] = {-2, -1, 1, 2, 2, 1, -1, -2};
+int n, m, dist[1005][1005];
+ii s, e;
+queue<ii> q;
 
-void dfs(int u) {
-    vst[u] = 1;
-    for (auto v : a[u]) 
-        if (!vst[v]) 
-            dfs(v);
+void bfs(ii s) {
+    frr (i, 1, n) frr (j, 1, m) dist[i][j] = -1;
+    dist[s.fi][s.se] = 0, q.push(s);
+    while (!q.empty()) {
+        int u = q.front().fi, v = q.front().se;
+        q.pop();
+        fr (i, 0, 8) {
+            int x = u + dx[i], y = v + dy[i];
+            if (x < 0 || x > n) continue;
+            if (y < 0 || y > m) continue;
+            if (dist[x][y] == -1) dist[x][y] = dist[u][v] + 1, q.push({x,y});
+        }
+    }
 }   
-
-void solve() {
-    frr (i, 1, n) 
-        if (!vst[i])
-            dfs(i), res++;
-    cout << res;
-}
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n >> m >> k;
-    frr (i, 1, k) {
-        int x; cin >> x;
-        c = min(c, x);
-    }
-    frr (i, 1, m) {
-        cin >> u >> v >> t;
-        if (t >= c) a[u].pb(v), a[v].pb(u);
-    }
-    solve;
-}   
+    cin >> n >> m >> s.fi >> s.se >> e.fi >> e.se;
+    bfs(s);
+    cout << dist[e.fi][e.se];   
+}

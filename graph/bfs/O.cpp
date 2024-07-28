@@ -1,5 +1,5 @@
 /*
- *  @date: 17 . 07 . 2024
+ *  @date: 28 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,29 +34,10 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int n, m, s, t, dist[N];
-vi a[N];
-queue<int> q;
+// FPATH (7 điểm)
 
-void bfs(int s) {   
-    frr (i, 1, n) dist[i] = -1;
-    dist[s] = 0;
-    q.push(s);
-    while (!q.empty()) {
-        int u = q.front();
-        q.pop();
-        for (int v : a[u])
-            if (dist[v] == -1) dist[v] = dist[u] + 1, q.push(v);
-    }
-}
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n >> m >> s >> t;
-    while (m--) {
-        int x, y; cin >> x >> y;
-        a[x].pb(y);
-    }
-    bfs(s);
-    cout << dist[t];
+    
 }

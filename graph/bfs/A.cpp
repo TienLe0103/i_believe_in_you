@@ -1,5 +1,5 @@
 /*
- *  @date: 17 . 07 . 2024
+ *  @date: 11 . 07 . 2024
  *  @tienle0103
  */
 
@@ -31,38 +31,21 @@ typedef greater<int>   gi;
 typedef map<int, int>  mii;
 typedef pair<int, int> ii;
 
-cs int N   = 1e6 + 5;
+cs int N   = 2000 + 5;
 cs int oo  = 1e18;
 
-priority_queue<int, vi, gi> res;
-queue<int> q;
-bool vst[N];
-int n, k;
-vi a[N];
-
-void bfs(int s) {
-    res.push(s), vst[s] = true, q.push(s);
-    while (!q.empty()) {
-        int u = q.front();
-        q.pop();
-        for (int v : a[u])  
-            if (!vst[v]) 
-                vst[v] = true, res.push(v), q.push(v);
-    }
-}
+//Biểu diễn cạnh 1
+int n, m, dist[N][N];
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n >> k;
-    frr (i, 1, n) {
-        int size; cin >> size;
-        while (size--) {
-            int x; cin >> x; a[i].pb(x);
-        }
+    cin >> n >> m;
+    while (m--) {
+        int u, v; cin >> u >> v;
+        dist[u][v] = dist[v][u] = 1;
     }
-    bfs(k);
-    cout << res.size() << '\n';
-    while (!res.empty()) {
-        cout << res.top() << ' '; res.pop();
+    frr (i, 1, n) {
+        frr (j, 1, n) cout << dist[i][j] << ' ';
+        cout << '\n';
     }
 }

@@ -35,6 +35,7 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
+// Đếm số đỉnh tới được
 int n, m, s;
 vi a[N];
 bool vst[N];

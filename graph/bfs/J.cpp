@@ -1,5 +1,5 @@
 /*
- *  @date: 26 . 07 . 2024
+ *  @date: 19 . 07 . 2024
  *  @tienle0103
  */
 
@@ -34,38 +34,38 @@ typedef pair<int, int> ii;
 cs int N   = 1e6 + 5;
 cs int oo  = 1e18;
 
-int dx[] = {0, 1, 0, -1};
-int dy[] = {1, 0, -1, 0};
-int n, res = oo, a[105][105], dist[105][105];
+// Ma trận 0 1 (5 điểm)
+int dx[]= {0, 1, 0 ,-1}, dy[] = {1, 0, -1, 0};
+int n, m, k,d =  0, s,ss;
+bool a[1005][1005], vst[1005][1005];
 queue<ii> q;
 
-bool bfs(int l, int r) {
-    if (a[1][1] < l || a[1][1] > r) return 0;
-    frr (i, 1, n) frr (j, 1, n) dist[i][j] = -1; 
-    dist[1][1] = 0;
-    q.push({1, 1});
+void bfs(ii s) {
+    q.push(s);
+    vst[s.fi][s.se] = 1;
+    d--;
     while (!q.empty()) {
         int u = q.front().fi, v = q.front().se;
         q.pop();
         fr (i, 0, 4) {
             int x = u + dx[i], y = v + dy[i];
-            if (x > 0 && x <= n && y > 0 && y <= n && a[x][y] >= l && a[x][y] <= r && dist[x][y] == -1) 
-                dist[x][y] = dist[u][v] + 1, q.push({x, y});
+            if (x < 1 || x > n) continue;
+            if (y < 1 || y > m) continue;
+            if (!vst[x][y] && a[x][y]) vst[x][y] = true, q.push({x, y}), d--;
+            if (!d) return;
         }
     }
-    return (dist[n][n] != -1) ? 1 : 0;
-}
-
-void solve() {
-    frr (i, 0, 100) 
-        frr (j, i, 100) 
-            if (bfs(i, j)) res = min(res, j - i);
-    cout << res;
 }
 
 signed main() {
     ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n;
-    frr (i, 1, n) frr (j, 1, n) cin >> a[i][j];
-    solve();
+    cin >> n >> m >> k;
+    frr (i, 1, n ) 
+        frr (j, 1, m) {
+            cin >> a[i][j];
+            if (a[i][j]) d++, s = i, ss = j;
+        }
+    d -= k;
+    bfs({s, ss});
+    frr (i, 1, n) frr (j, 1, m ) if (!vst[i][j] && a[i][j]) cout << i << ' ' << j << '\n';
 }
